@@ -198,7 +198,7 @@ summary:focus-visible {
 }
 
 .call-link:hover,
-.consultation-form button:hover,
+.form-submit button:hover,
 .primary-button:hover {
   background: var(--mauve-deep);
 }
@@ -376,7 +376,7 @@ summary:focus-visible {
 .consultation-form {
   scroll-margin-top: 104px;
   display: grid;
-  grid-template-columns: 1fr 0.9fr 1.1fr 1.1fr 1.15fr;
+  grid-template-columns: 1fr 1fr 1.3fr auto;
   gap: 16px 18px;
   align-items: end;
   padding: 24px 28px 22px;
@@ -1154,7 +1154,7 @@ summary:focus-visible {
 }
 
 .process-section {
-  background: var(--sage-deep);
+  background: var(--ink-soft);
   color: var(--white);
 }
 
@@ -1565,7 +1565,6 @@ summary:focus-visible {
 }
 
 .clinic-details-heading {
-  max-width: 760px;
   padding-bottom: 40px;
   margin-bottom: 44px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.24);
@@ -1576,13 +1575,14 @@ summary:focus-visible {
 }
 
 .clinic-details-heading h2 {
+  max-width: 760px;
   margin-bottom: 0;
   color: var(--white);
 }
 
 .details-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .details-grid > div {
@@ -1727,10 +1727,15 @@ summary:focus-visible {
 .sticky-consultation-form {
   width: min(1240px, calc(100% - 32px));
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 1fr 1.12fr 1.28fr;
+  grid-template-columns: 1fr 1fr 1.3fr auto;
   gap: 14px;
   align-items: end;
   margin-inline: auto;
+}
+
+.sticky-form-heading {
+  grid-column: 1 / -1;
+  margin-bottom: 4px;
 }
 
 .sticky-form-heading p {
@@ -2863,7 +2868,7 @@ summary:focus-visible {
   -ms-overflow-style: none;
   padding: 26px 28px 24px;
   color: var(--white);
-  background: var(--mauve-deep);
+  background: rgba(86, 55, 70, 0.98);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   box-shadow: var(--shadow);

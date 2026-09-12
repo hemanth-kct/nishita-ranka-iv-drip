@@ -10,7 +10,6 @@ import {
   Clock3,
   Droplets,
   MapPin,
-  MessageCircle,
   Phone,
   ShieldCheck,
   Sparkles,
@@ -459,6 +458,8 @@ export default function SkinBoostersLanding() {
     useState<MobileCtaTone>("on-light");
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [exitPopupOpen, setExitPopupOpen] = useState(false);
+  const exitPopupCloseRef = useRef<HTMLButtonElement>(null);
   const stickyFormRef = useRef<HTMLElement>(null);
   const stickyCloseButtonRef = useRef<HTMLButtonElement>(null);
   const mobileCtaRef = useRef<HTMLButtonElement>(null);
@@ -542,6 +543,18 @@ export default function SkinBoostersLanding() {
     [openMobileConsultation],
   );
 
+  const closeExitPopup = useCallback(() => {
+    setExitPopupOpen(false);
+  }, []);
+
+  const openExitPopup = useCallback(
+    (event: ReactMouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      setExitPopupOpen(true);
+    },
+    [],
+  );
+
   useEffect(() => {
     if (window.matchMedia("(max-width: 560px)").matches) return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -558,7 +571,7 @@ export default function SkinBoostersLanding() {
       if (event.clientY > 0) return;
 
       exitIntentShown = true;
-      showStickyForm("auto");
+      setExitPopupOpen(true);
     }
 
     document.addEventListener("mouseout", handleMouseOut);
@@ -566,7 +579,20 @@ export default function SkinBoostersLanding() {
       window.clearTimeout(armTimer);
       document.removeEventListener("mouseout", handleMouseOut);
     };
-  }, [showStickyForm]);
+  }, []);
+
+  useEffect(() => {
+    if (!exitPopupOpen) return;
+
+    exitPopupCloseRef.current?.focus();
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeExitPopup();
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [exitPopupOpen, closeExitPopup]);
 
   useEffect(() => {
     let animationFrame = 0;
@@ -1111,6 +1137,13 @@ export default function SkinBoostersLanding() {
               treatment planning
             </span>
           </div>
+          <a
+            className="primary-button"
+            href="#consultation"
+            onClick={openExitPopup}
+          >
+            Book a consultation <ArrowRight size={18} aria-hidden="true" />
+          </a>
         </div>
       </section>
 
@@ -1250,7 +1283,7 @@ export default function SkinBoostersLanding() {
             <a
               className="primary-button"
               href="#consultation"
-              onClick={handleConsultationLinkClick}
+              onClick={openExitPopup}
             >
               Discuss a concern <ArrowRight size={18} aria-hidden="true" />
             </a>
@@ -1427,12 +1460,9 @@ export default function SkinBoostersLanding() {
             <a
               className="primary-button"
               href="#consultation"
-              onClick={handleConsultationLinkClick}
+              onClick={openExitPopup}
             >
               Request a consultation <ArrowRight size={18} aria-hidden="true" />
-            </a>
-            <a className="secondary-button" href={clinicPhoneHref}>
-              <Phone size={18} aria-hidden="true" /> Call {clinicPhoneDisplay}
             </a>
           </div>
         </div>
@@ -1473,15 +1503,6 @@ export default function SkinBoostersLanding() {
               <Clock3 size={22} aria-hidden="true" />
               <h3>Clinic hours</h3>
               <p>Monday to Saturday, 10:00 AM to 7:00 PM. Sunday closed.</p>
-            </div>
-            <div data-reveal="rise" style={{ "--reveal-delay": "160ms" } as CSSProperties}>
-              <MessageCircle size={22} aria-hidden="true" />
-              <h3>Speak with the team</h3>
-              <p>
-                {clinicPhoneDisplay}
-                <br />
-                support@drnishitaranka.com
-              </p>
             </div>
           </div>
         </div>
@@ -1644,6 +1665,115 @@ export default function SkinBoostersLanding() {
             </p>
           </form>
         </section>
+      )}
+
+      {exitPopupOpen && (
+        <div
+          className="booking-modal-overlay"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) closeExitPopup();
+          }}
+        >
+          <div
+            className="booking-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="exit-popup-title"
+          >
+            <button
+              ref={exitPopupCloseRef}
+              type="button"
+              className="booking-modal-close"
+              aria-label="Close"
+              onClick={closeExitPopup}
+            >
+              <X size={18} aria-hidden="true" />
+            </button>
+            <div className="booking-modal-heading">
+              <p className="booking-modal-kicker">Before you go</p>
+              <h2 id="exit-popup-title">Get a free skin consultation.</h2>
+            </div>
+            <form
+              className="booking-modal-form"
+              onSubmit={handleSubmit}
+              data-form-prefix="exit-"
+              noValidate
+            >
+              <div className="field-group">
+                <label htmlFor="exit-name">
+                  Full name <span className="required-mark" aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="exit-name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={formValues.name}
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? "exit-name-error" : undefined}
+                  onChange={(event) => updateField("name", event.target.value)}
+                />
+                {errors.name && (
+                  <span className="field-error" id="exit-name-error" role="alert">
+                    {errors.name}
+                  </span>
+                )}
+              </div>
+              <div className="field-group">
+                <label htmlFor="exit-phone">
+                  Mobile number <span className="required-mark" aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="exit-phone"
+                  name="phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="+91"
+                  required
+                  value={formValues.phone}
+                  aria-invalid={Boolean(errors.phone)}
+                  aria-describedby={errors.phone ? "exit-phone-error" : undefined}
+                  onChange={(event) => updateField("phone", event.target.value)}
+                />
+                {errors.phone && (
+                  <span className="field-error" id="exit-phone-error" role="alert">
+                    {errors.phone}
+                  </span>
+                )}
+              </div>
+              <ConcernDropdown
+                id="exit-area"
+                label="Primary skin concern"
+                placeholder="Select"
+                options={concernOptions}
+                value={formValues.area}
+                error={errors.area}
+                onChange={(value) => updateField("area", value)}
+              />
+              <div className="form-submit">
+                <button
+                  type="submit"
+                  data-testid="exit-consultation-submit"
+                  disabled={isSubmitting}
+                  aria-busy={isSubmitting}
+                >
+                  {isSubmitting ? "Saving your request..." : "Request a consultation"}
+                  <ArrowRight size={18} aria-hidden="true" />
+                </button>
+              </div>
+              {errors.submit && (
+                <p className="form-submit-error" role="alert">
+                  {errors.submit}
+                </p>
+              )}
+              <p className="form-disclaimer">
+                * By continuing, you agree to be contacted by the clinic.
+              </p>
+            </form>
+          </div>
+        </div>
       )}
 
       <button
