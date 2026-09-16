@@ -2295,7 +2295,7 @@ summary:focus-visible {
     grid-area: hero-stack;
     align-self: start;
     max-width: calc(100% - 32px);
-    margin: 258px 16px 0;
+    margin: 208px 16px 0;
     font-size: 32px;
     line-height: 1.08;
   }
