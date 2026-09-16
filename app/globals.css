@@ -328,8 +328,9 @@ summary:focus-visible {
 }
 
 .hero-offer-value {
-  font-size: 26px;
-  font-weight: 800;
+  font-family: var(--font-display), Marcellus, Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
   line-height: 1.05;
 }
 
@@ -1897,6 +1898,10 @@ summary:focus-visible {
     height: 22px;
   }
 
+  .hero-offer-value {
+    font-size: 28px;
+  }
+
   .hero h1 {
     font-size: 52px;
   }
@@ -1987,6 +1992,10 @@ summary:focus-visible {
 
   .hero-copy {
     min-height: 0;
+  }
+
+  .hero-offer-value {
+    font-size: 30px;
   }
 
   .hero h1 {
@@ -2276,8 +2285,8 @@ summary:focus-visible {
   }
 
   .hero .hero-offer-value {
-    font-size: 20px;
-    line-height: 1.1;
+    font-size: 17px;
+    line-height: 1.15;
     white-space: normal;
   }
 
