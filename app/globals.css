@@ -297,11 +297,12 @@ summary:focus-visible {
   align-items: center;
   gap: 14px;
   margin-bottom: 20px;
-  padding: 22px 28px;
+  padding: 16px 20px;
   border-radius: 20px;
   background: var(--mauve-deep);
   color: var(--white);
   width: fit-content;
+  max-width: 100%;
 }
 
 .hero-offer svg {
@@ -327,10 +328,9 @@ summary:focus-visible {
 }
 
 .hero-offer-value {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 800;
   line-height: 1.05;
-  white-space: nowrap;
 }
 
 .hero h1 {
@@ -2286,7 +2286,7 @@ summary:focus-visible {
     grid-area: hero-stack;
     align-self: start;
     max-width: calc(100% - 32px);
-    margin: 190px 16px 0;
+    margin: 258px 16px 0;
     font-size: 32px;
     line-height: 1.08;
   }

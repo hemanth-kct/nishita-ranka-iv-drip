@@ -10,7 +10,6 @@ import {
   Clock3,
   Droplets,
   MapPin,
-  Phone,
   ShieldCheck,
   Sparkles,
   Star,
@@ -31,8 +30,6 @@ import {
 
 let exitIntentShown = false;
 
-const clinicPhoneDisplay = "+91 93812 19187";
-const clinicPhoneHref = "tel:+919381219187";
 const leadApiUrl = "https://api.drnishitaranka.in/v1/leads";
 
 const concernOptions = [
@@ -459,6 +456,7 @@ export default function SkinBoostersLanding() {
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [exitPopupOpen, setExitPopupOpen] = useState(false);
+  const [exitPopupIsAutoTrigger, setExitPopupIsAutoTrigger] = useState(false);
   const exitPopupCloseRef = useRef<HTMLButtonElement>(null);
   const stickyFormRef = useRef<HTMLElement>(null);
   const stickyCloseButtonRef = useRef<HTMLButtonElement>(null);
@@ -550,6 +548,7 @@ export default function SkinBoostersLanding() {
   const openExitPopup = useCallback(
     (event: ReactMouseEvent<HTMLAnchorElement>) => {
       event.preventDefault();
+      setExitPopupIsAutoTrigger(false);
       setExitPopupOpen(true);
     },
     [],
@@ -567,11 +566,14 @@ export default function SkinBoostersLanding() {
 
     function handleMouseOut(event: MouseEvent) {
       if (!armed) return;
+      if (exitIntentShown) return;
       if (event.relatedTarget !== null) return;
       if (event.clientY > 0) return;
 
       exitIntentShown = true;
+      setExitPopupIsAutoTrigger(true);
       setExitPopupOpen(true);
+      document.removeEventListener("mouseout", handleMouseOut);
     }
 
     document.addEventListener("mouseout", handleMouseOut);
@@ -733,7 +735,7 @@ export default function SkinBoostersLanding() {
     if (digits.length < 10 || digits.length > 13) {
       nextErrors.phone = "Please enter a valid mobile number.";
     }
-    if (!area) nextErrors.area = "Please choose a concern.";
+    if (form.has("area") && !area) nextErrors.area = "Please choose a concern.";
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
@@ -852,14 +854,6 @@ export default function SkinBoostersLanding() {
           </a>
           <div className="header-actions">
             <span className="header-location">Banjara Hills, Hyderabad</span>
-            <a
-              className="call-link"
-              href={clinicPhoneHref}
-              aria-label={"Call clinic on " + clinicPhoneDisplay}
-            >
-              <Phone size={18} aria-hidden="true" />
-              <span>Call clinic</span>
-            </a>
           </div>
         </div>
       </header>
@@ -901,7 +895,7 @@ export default function SkinBoostersLanding() {
               <span className="hero-offer-copy">
                 <span className="hero-offer-kicker">New patient privilege</span>
                 <span className="hero-offer-value">
-                  Complimentary IV wellness session with eligible protocols*
+                  Complimentary IV wellness session with eligible protocols
                 </span>
               </span>
             </div>
@@ -914,12 +908,16 @@ export default function SkinBoostersLanding() {
             </h1>
             <div className="hero-media-frame">
               <picture className="hero-media-picture">
+                <source
+                  media="(max-width: 560px)"
+                  srcSet="/brand/ivdripsmobile.png"
+                />
                 <img
                   className="hero-media"
-                  src="/brand/dr-nishita.jpg"
-                  alt="Dr. Nishita Ranka planning a skin booster and IV wellness protocol at her Hyderabad clinic"
-                  width={1200}
-                  height={1500}
+                  src="/brand/ivdrips.png"
+                  alt="Patient relaxing in a robe while receiving an IV wellness drip at Dr. Nishita's clinic"
+                  width={1804}
+                  height={872}
                   fetchPriority="high"
                   decoding="async"
                 />
@@ -1743,15 +1741,17 @@ export default function SkinBoostersLanding() {
                   </span>
                 )}
               </div>
-              <ConcernDropdown
-                id="exit-area"
-                label="Primary skin concern"
-                placeholder="Select"
-                options={concernOptions}
-                value={formValues.area}
-                error={errors.area}
-                onChange={(value) => updateField("area", value)}
-              />
+              {!exitPopupIsAutoTrigger && (
+                <ConcernDropdown
+                  id="exit-area"
+                  label="Primary skin concern"
+                  placeholder="Select"
+                  options={concernOptions}
+                  value={formValues.area}
+                  error={errors.area}
+                  onChange={(value) => updateField("area", value)}
+                />
+              )}
               <div className="form-submit">
                 <button
                   type="submit"
