@@ -549,6 +549,8 @@ export default function SkinBoostersLanding() {
     (event: ReactMouseEvent<HTMLAnchorElement>) => {
       event.preventDefault();
       setExitPopupIsAutoTrigger(false);
+      setFormValues({ name: "", phone: "", area: "" });
+      setErrors({});
       setExitPopupOpen(true);
     },
     [],
@@ -572,6 +574,8 @@ export default function SkinBoostersLanding() {
 
       exitIntentShown = true;
       setExitPopupIsAutoTrigger(true);
+      setFormValues({ name: "", phone: "", area: "" });
+      setErrors({});
       setExitPopupOpen(true);
       document.removeEventListener("mouseout", handleMouseOut);
     }
