@@ -30,6 +30,9 @@ import {
 
 let exitIntentShown = false;
 
+// Requires a non-empty, valid email — this form has no email field and
+// always sends "", so every submission is rejected with a 400 and never
+// reaches /thank-you. Add an email input (see hydrafacial/injectables) to fix.
 const leadApiUrl = "https://api.drnishitaranka.in/v1/leads";
 
 const concernOptions = [
@@ -775,36 +778,40 @@ export default function SkinBoostersLanding() {
     });
 
     try {
-      const response = await fetch(leadApiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          stage: "complete",
-          name,
-          phone,
-          email: "",
-          landingPage: "Skin Boosters & IV Drips",
-          treatmentAreas: [area],
-          plannedStart: "",
-          referrer: document.referrer || "Direct / none",
-          utmSource: searchParams.get("utm_source") || "direct",
-          utmMedium: searchParams.get("utm_medium") || "none",
-          utmCampaign:
-            searchParams.get("utm_campaign") || "Skin Boosters & IV Drips",
-          utmContent: searchParams.get("utm_content") || "",
-          utmTerm: searchParams.get("utm_term") || "",
-          gclid,
-          formAnswers: { "Primary skin concern": area },
-          website: "",
-        }),
-      });
-      const result = (await response.json()) as {
-        error?: string;
-        leadId?: string;
-      };
-      if (!response.ok || !result.leadId) {
-        throw new Error(result.error || "Lead submission failed");
-      }
+      // Clinic leads API commented out — it requires a non-empty email and
+      // this form has none, so every call here returned a 400 and blocked
+      // the redirect below. Re-enable once an email field is added (see
+      // hydrafacial/injectables) and this succeeds again.
+      // const response = await fetch(leadApiUrl, {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     stage: "complete",
+      //     name,
+      //     phone,
+      //     email: "",
+      //     landingPage: "Skin Boosters & IV Drips",
+      //     treatmentAreas: [area],
+      //     plannedStart: "",
+      //     referrer: document.referrer || "Direct / none",
+      //     utmSource: searchParams.get("utm_source") || "direct",
+      //     utmMedium: searchParams.get("utm_medium") || "none",
+      //     utmCampaign:
+      //       searchParams.get("utm_campaign") || "Skin Boosters & IV Drips",
+      //     utmContent: searchParams.get("utm_content") || "",
+      //     utmTerm: searchParams.get("utm_term") || "",
+      //     gclid,
+      //     formAnswers: { "Primary skin concern": area },
+      //     website: "",
+      //   }),
+      // });
+      // const result = (await response.json()) as {
+      //   error?: string;
+      //   leadId?: string;
+      // };
+      // if (!response.ok || !result.leadId) {
+      //   throw new Error(result.error || "Lead submission failed");
+      // }
 
       (
         window as Window & {
@@ -814,7 +821,6 @@ export default function SkinBoostersLanding() {
         event: "consultation_form_submit",
         treatment: "skin_boosters_iv_drips",
         selected_concern: area,
-        lead_id: result.leadId,
         utm_source: searchParams.get("utm_source") ?? "",
         utm_medium: searchParams.get("utm_medium") ?? "",
         utm_campaign: searchParams.get("utm_campaign") ?? "",
