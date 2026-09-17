@@ -297,12 +297,12 @@ summary:focus-visible {
   align-items: center;
   gap: 14px;
   margin-bottom: 20px;
-  padding: 16px 20px;
+  padding: 22px 28px;
   border-radius: 20px;
   background: var(--mauve-deep);
   color: var(--white);
   width: fit-content;
-  max-width: 100%;
+  max-width: 500px;
 }
 
 .hero-offer svg {
@@ -329,9 +329,9 @@ summary:focus-visible {
 
 .hero-offer-value {
   font-family: var(--font-display), Marcellus, Georgia, serif;
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 400;
-  line-height: 1.05;
+  line-height: 1.15;
 }
 
 .hero h1 {
@@ -1898,10 +1898,6 @@ summary:focus-visible {
     height: 22px;
   }
 
-  .hero-offer-value {
-    font-size: 28px;
-  }
-
   .hero h1 {
     font-size: 52px;
   }
@@ -1992,10 +1988,6 @@ summary:focus-visible {
 
   .hero-copy {
     min-height: 0;
-  }
-
-  .hero-offer-value {
-    font-size: 30px;
   }
 
   .hero h1 {
@@ -2285,8 +2277,8 @@ summary:focus-visible {
   }
 
   .hero .hero-offer-value {
-    font-size: 17px;
-    line-height: 1.15;
+    font-size: 16px;
+    line-height: 1.25;
     white-space: normal;
   }
 
@@ -2295,7 +2287,7 @@ summary:focus-visible {
     grid-area: hero-stack;
     align-self: start;
     max-width: calc(100% - 32px);
-    margin: 208px 16px 0;
+    margin: 235px 16px 0;
     font-size: 32px;
     line-height: 1.08;
   }

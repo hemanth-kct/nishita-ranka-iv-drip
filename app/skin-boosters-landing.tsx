@@ -865,6 +865,23 @@ export default function SkinBoostersLanding() {
       <section className="hero" id="top" aria-labelledby="hero-title">
         <div className="hero-inner">
           <div className="hero-copy">
+            <div className="hero-media-frame">
+              <picture className="hero-media-picture">
+                <source
+                  media="(max-width: 560px)"
+                  srcSet="/brand/ivdripsmobile.png"
+                />
+                <img
+                  className="hero-media"
+                  src="/brand/ivdrips.png"
+                  alt="Patient relaxing in a robe while receiving an IV wellness drip at Dr. Nishita's clinic"
+                  width={1804}
+                  height={872}
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
+            </div>
             <div
               className="rating-line hero-reveal"
               style={{ "--delay": "80ms" } as CSSProperties}
@@ -910,23 +927,6 @@ export default function SkinBoostersLanding() {
             >
               Better skin quality begins beneath the surface.
             </h1>
-            <div className="hero-media-frame">
-              <picture className="hero-media-picture">
-                <source
-                  media="(max-width: 560px)"
-                  srcSet="/brand/ivdripsmobile.png"
-                />
-                <img
-                  className="hero-media"
-                  src="/brand/ivdrips.png"
-                  alt="Patient relaxing in a robe while receiving an IV wellness drip at Dr. Nishita's clinic"
-                  width={1804}
-                  height={872}
-                  fetchPriority="high"
-                  decoding="async"
-                />
-              </picture>
-            </div>
             <p
               className="hero-intro hero-reveal"
               style={{ "--delay": "300ms" } as CSSProperties}
